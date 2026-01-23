@@ -108,12 +108,16 @@ export const FoodInputUI = {
                 <div style="font-size:0.8rem; color:var(--text-secondary)">
                     ${subtext}
                 </div>
-                <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">
-                    <span style="color:var(--color-protein)">${Math.round(item.protein).toLocaleString()}p</span> • 
-                    <span style="color:var(--color-fat)">${Math.round(item.fat).toLocaleString()}f</span> • 
-                    <span style="color:var(--color-carbs)">${Math.round(item.carbs).toLocaleString()}c</span> • 
-                    ${Math.round(item.calories).toLocaleString()} kcal
-                </div>
+                    <div style="margin-top:2px;">
+                        <span class="fib-val">Fib: ${Math.round(item.fiber || 0).toLocaleString()}g</span> •
+                        <span class="sug-val">Sug: ${Math.round(item.sugar || 0).toLocaleString()}g</span>
+                    </div>
+                    <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">
+                        <span style="color:var(--color-protein)">${Math.round(item.protein).toLocaleString()}p</span> • 
+                        <span style="color:var(--color-fat)">${Math.round(item.fat).toLocaleString()}f</span> • 
+                        <span style="color:var(--color-carbs)">${Math.round(item.carbs).toLocaleString()}c</span> • 
+                        ${Math.round(item.calories).toLocaleString()} kcal
+                    </div>
             </div>
             `;
         }).join('');
@@ -163,6 +167,9 @@ export const FoodInputUI = {
                         <span style="color:var(--color-protein)"><span id="preview-protein">0</span>p</span>
                         <span style="color:var(--color-fat)"><span id="preview-fat">0</span>f</span>
                         <span style="color:var(--color-carbs)"><span id="preview-carbs">0</span>c</span>
+                        <span class="fib-val">Fib: <span id="preview-fiber">0</span>g</span>
+                        <span class="sug-val">Sug: <span id="preview-sugar">0</span>g</span>
+                        <span style="color:var(--text-secondary); margin-left:8px">Net: <span id="preview-net-carbs" style="font-weight:600">0</span>g</span>
                     </div>
                 </div>
 
@@ -226,11 +233,22 @@ export const FoodInputUI = {
             const p = Math.round(details.protein * multiplier);
             const f = Math.round(details.fat * multiplier);
             const c = Math.round(details.carbs * multiplier);
+            const fiber = Math.round((details.fiber || 0) * multiplier);
+            const sugar = Math.round((details.sugar || 0) * multiplier);
+            const sugarAlcohols = Math.round((details.sugarAlcohols || 0) * multiplier);
+            const netCarbs = Math.max(0, c - fiber - sugarAlcohols);
             const kcal = Math.round(details.calories * multiplier);
 
             document.getElementById('preview-protein').textContent = p;
             document.getElementById('preview-fat').textContent = f;
             document.getElementById('preview-carbs').textContent = c;
+            document.getElementById('preview-fiber').textContent = fiber;
+            document.getElementById('preview-sugar').textContent = sugar;
+
+            // Should probably show Net Carbs context in the preview
+            const ncDisplay = document.getElementById('preview-net-carbs');
+            if (ncDisplay) ncDisplay.textContent = netCarbs;
+
             document.getElementById('preview-calories').textContent = kcal;
 
             return {
@@ -238,6 +256,9 @@ export const FoodInputUI = {
                 protein: p,
                 fat: f,
                 carbs: c,
+                fiber: fiber,
+                sugar: sugar,
+                sugarAlcohols: sugarAlcohols,
                 calories: kcal,
                 servingSize: `${amount} ${portion.label}` // Update description to reflect chosen amount
             };
@@ -283,12 +304,16 @@ export const FoodInputUI = {
                     <div class="search-result-item preset-item" data-index="${index}" style="position:relative; padding-right: 40px;">
                         <div style="font-weight:600">${item.name}</div>
                         <div style="font-size:0.8rem; color:var(--text-secondary)">${item.description}</div>
-                        <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">
-                            <span style="color:var(--color-protein)">${Math.round(item.protein).toLocaleString()}p</span> • 
-                            <span style="color:var(--color-fat)">${Math.round(item.fat).toLocaleString()}f</span> • 
-                            <span style="color:var(--color-carbs)">${Math.round(item.carbs).toLocaleString()}c</span> • 
-                            ${Math.round(item.calories).toLocaleString()} kcal
-                        </div>
+                            <div style="margin-top:2px;">
+                                <span class="fib-val">Fib: ${Math.round(item.fiber || 0).toLocaleString()}g</span> •
+                                <span class="sug-val">Sug: ${Math.round(item.sugar || 0).toLocaleString()}g</span>
+                            </div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">
+                                <span style="color:var(--color-protein)">${Math.round(item.protein).toLocaleString()}p</span> • 
+                                <span style="color:var(--color-fat)">${Math.round(item.fat).toLocaleString()}f</span> • 
+                                <span style="color:var(--color-carbs)">${Math.round(item.carbs).toLocaleString()}c</span> • 
+                                ${Math.round(item.calories).toLocaleString()} kcal
+                            </div>
                         
                         ${isCustom ? `
                         <div class="preset-actions" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); display:flex; gap:8px;">
@@ -347,6 +372,9 @@ export const FoodInputUI = {
         const pVal = existingItem ? existingItem.protein : 0;
         const fVal = existingItem ? existingItem.fat : 0;
         const cVal = existingItem ? existingItem.carbs : 0;
+        const fiberVal = existingItem ? (existingItem.fiber || 0) : 0;
+        const sugarVal = existingItem ? (existingItem.sugar || 0) : 0;
+        const saVal = existingItem ? (existingItem.sugarAlcohols || 0) : 0;
         const calVal = existingItem ? existingItem.calories : 0;
 
         this.openModal(`
@@ -373,6 +401,18 @@ export const FoodInputUI = {
                     <input type="number" id="preset-c" class="search-input" value="${cVal}">
                 </div>
                 <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size: 0.8rem; margin-bottom: 4px;">Fiber (g)</label>
+                    <input type="number" id="preset-fiber" class="search-input" value="${fiberVal}">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size: 0.8rem; margin-bottom: 4px;">Sugar (g)</label>
+                    <input type="number" id="preset-sugar" class="search-input" value="${sugarVal}">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size: 0.8rem; margin-bottom: 4px;">Sugar Alc (g)</label>
+                    <input type="number" id="preset-sa" class="search-input" value="${saVal}">
+                </div>
+                <div style="margin-bottom: 12px;">
                     <label style="display:block; font-size: 0.8rem; margin-bottom: 4px;">Calories</label>
                     <input type="number" id="preset-cal" class="search-input" value="${calVal}">
                 </div>
@@ -393,6 +433,9 @@ export const FoodInputUI = {
             const protein = parseFloat(document.getElementById('preset-p').value) || 0;
             const fat = parseFloat(document.getElementById('preset-f').value) || 0;
             const carbs = parseFloat(document.getElementById('preset-c').value) || 0;
+            const fiber = parseFloat(document.getElementById('preset-fiber').value) || 0;
+            const sugar = parseFloat(document.getElementById('preset-sugar').value) || 0;
+            const sugarAlcohols = parseFloat(document.getElementById('preset-sa').value) || 0;
             const calories = parseFloat(document.getElementById('preset-cal').value) || 0;
 
             if (!name) return; // Basic validation
@@ -404,6 +447,9 @@ export const FoodInputUI = {
                 protein,
                 fat,
                 carbs,
+                fiber,
+                sugar,
+                sugarAlcohols,
                 calories
             };
 

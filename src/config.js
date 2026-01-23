@@ -5,6 +5,8 @@ export const CONFIG = {
         protein: 233, // grams
         fat: 110,     // grams
         carbs: 75,    // grams
+        fiber: 30,    // grams
+        sugar: 50,    // grams
         calories: 2222 // kcal
     }
 };

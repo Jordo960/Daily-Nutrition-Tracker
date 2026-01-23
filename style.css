@@ -17,6 +17,10 @@
     /* Neon Orange */
     --color-primary: #7000ff;
     /* Deep Purple */
+    --color-fiber: #00ff99;
+    /* Neon Green */
+    --color-sugar: #ff66d9;
+    /* Neon Pink */
 
     /* Typography */
     --font-heading: 'Outfit', sans-serif;
@@ -197,6 +201,14 @@ h2 {
     color: var(--color-calories);
 }
 
+.macro-card.fiber {
+    color: var(--color-fiber);
+}
+
+.macro-card.sugar {
+    color: var(--color-sugar);
+}
+
 /* Actions */
 .actions {
     display: flex;
@@ -287,6 +299,14 @@ button {
 
 .c-val {
     color: var(--color-carbs);
+}
+
+.fib-val {
+    color: var(--color-fiber);
+}
+
+.sug-val {
+    color: var(--color-sugar);
 }
 
 /* Modal Overlay */

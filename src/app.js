@@ -1,7 +1,7 @@
-import { DashboardUI } from './ui/dashboard.js';
-import { LogUI } from './ui/log.js';
-import { FoodInputUI } from './ui/food-input.js';
-import { DateNavUI } from './ui/date-nav.js';
+import { DashboardUI } from './ui/dashboard.js?v=2';
+import { LogUI } from './ui/log.js?v=2';
+import { FoodInputUI } from './ui/food-input.js?v=2';
+import { DateNavUI } from './ui/date-nav.js?v=2';
 
 // Initialize Components
 document.addEventListener('DOMContentLoaded', () => {

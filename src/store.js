@@ -40,7 +40,7 @@ export class Store {
         }
 
         // Ensure goals are valid
-        ['protein', 'fat', 'carbs', 'calories'].forEach(key => {
+        ['protein', 'fat', 'carbs', 'fiber', 'sugar', 'calories'].forEach(key => {
             if (!Number.isFinite(state.goals[key])) state.goals[key] = CONFIG.DEFAULT_GOALS[key] || 0;
         });
 
@@ -111,6 +111,9 @@ export class Store {
             protein: p,
             fat: f,
             carbs: c,
+            fiber: parseFloat(foodItem.fiber) || 0,
+            sugar: parseFloat(foodItem.sugar) || 0,
+            sugarAlcohols: parseFloat(foodItem.sugarAlcohols) || 0,
             calories: cal,
             timestamp: Date.now() // unique ID
         });
@@ -140,9 +143,12 @@ export class Store {
             acc.protein += item.protein;
             acc.fat += item.fat;
             acc.carbs += item.carbs;
+            acc.fiber += (item.fiber || 0);
+            acc.sugar += (item.sugar || 0);
+            acc.sugarAlcohols += (item.sugarAlcohols || 0);
             acc.calories += item.calories;
             return acc;
-        }, { protein: 0, fat: 0, carbs: 0, calories: 0 });
+        }, { protein: 0, fat: 0, carbs: 0, fiber: 0, sugar: 0, sugarAlcohols: 0, calories: 0 });
     }
 
     getCurrentLog() {

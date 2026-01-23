@@ -14,6 +14,9 @@ export const DashboardUI = {
             ${this._createCard('protein', 'Protein', 'g')}
             ${this._createCard('fat', 'Fat', 'g')}
             ${this._createCard('carbs', 'Carbs', 'g')}
+            ${this._createCard('fiber', 'Fiber', 'g')}
+            ${this._createCard('sugar', 'Sugar', 'g')}
+            ${this._createCard('net-carbs', 'Net Carbs', 'g')}
         `;
         this.update();
     },
@@ -26,6 +29,17 @@ export const DashboardUI = {
         this._updateCard('protein', consumed.protein, state.goals.protein);
         this._updateCard('fat', consumed.fat, state.goals.fat);
         this._updateCard('carbs', consumed.carbs, state.goals.carbs);
+        this._updateCard('fiber', consumed.fiber, state.goals.fiber);
+        this._updateCard('sugar', consumed.sugar, state.goals.sugar);
+
+        const netCarbs = Math.max(0, consumed.carbs - (consumed.fiber || 0) - (consumed.sugarAlcohols || 0));
+        // No explicit goal for Net Carbs in current schema, so might use Carbs goal as reference or hide progress ring?
+        // Plan said: "ideally positioned near the Total Carbohydrates section for context."
+        // Let's use the Total Carb goal as the denominator for now, or just show value.
+        // If we want it to look like a macro card, we need a goal.
+        // Let's assume Net Carb goal ~= Total Carb Goal for simpler visualization, or just 0 to hide ring if we wanted but _updateCard expects goal.
+        // Better: let's track it against the standard Carb goal for context.
+        this._updateCard('net-carbs', netCarbs, state.goals.carbs);
     },
 
     _createCard(type, label, unit) {

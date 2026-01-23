@@ -57,6 +57,9 @@ export const USDAService = {
             protein: getNutrient(1003),
             fat: getNutrient(1004),
             carbs: getNutrient(1005),
+            fiber: getNutrient(1079), // Dietary Fiber
+            sugar: getNutrient(2000), // Total Sugars
+            sugarAlcohols: getNutrient(1099), // Sugar Alcohol
             calories: getNutrient(1008) || getNutrient(2047) || 0,
             servingSize: food.servingSize ? `${food.servingSize} ${food.servingSizeUnit}` : '100g'
         };
