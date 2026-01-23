@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts: Inter and Outfit for premium feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Dashboard Header -->
+        <header class="app-header">
+            <h1>Daily Fuel</h1>
+            <div class="date-display" id="date-display">Today</div>
+        </header>
+
+        <!-- Nutrition Summary Cards -->
+        <section id="dashboard" class="dashboard-grid">
+            <!-- Injected by JS -->
+        </section>
+
+        <!-- Actions -->
+        <section class="actions">
+            <button id="btn-search-food" class="btn-primary">
+                <span class="icon">+</span> Add Food
+            </button>
+            <button id="btn-add-preset" class="btn-secondary">
+                <span class="icon">⚡</span> Quick Add
+            </button>
+        </section>
+
+        <!-- Food Log -->
+        <section class="food-log">
+            <h2>Today's Intake</h2>
+            <ul id="log-list" class="log-list">
+                <!-- Injected by JS -->
+            </ul>
+        </section>
+
+        <!-- Modals will go here -->
+        <div id="modal-container"></div>
+    </div>
+
+    <script type="module" src="./src/app.js"></script>
+</body>
+</html>
