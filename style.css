@@ -133,12 +133,16 @@ h2 {
     transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
     position: relative;
     overflow: hidden;
+
+    /* Glow Effect Base */
+    --glow-color: transparent;
+    box-shadow: 0 0 20px var(--glow-color);
 }
 
 .macro-card:hover {
     background: var(--bg-card-hover);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-card), 0 0 35px var(--glow-color);
 }
 
 .macro-card:active {
@@ -213,28 +217,35 @@ h2 {
 }
 
 /* Macro Variations */
+
 .macro-card.protein {
     color: var(--color-protein);
+    --glow-color: color-mix(in srgb, var(--color-protein), transparent 75%);
 }
 
 .macro-card.fat {
     color: var(--color-fat);
+    --glow-color: color-mix(in srgb, var(--color-fat), transparent 75%);
 }
 
 .macro-card.carbs {
     color: var(--color-carbs);
+    --glow-color: color-mix(in srgb, var(--color-carbs), transparent 75%);
 }
 
 .macro-card.calories {
     color: var(--color-calories);
+    --glow-color: color-mix(in srgb, var(--color-calories), transparent 75%);
 }
 
 .macro-card.fiber {
     color: var(--color-fiber);
+    --glow-color: color-mix(in srgb, var(--color-fiber), transparent 75%);
 }
 
 .macro-card.sugar {
     color: var(--color-sugar);
+    --glow-color: color-mix(in srgb, var(--color-sugar), transparent 75%);
 }
 
 /* Actions */
